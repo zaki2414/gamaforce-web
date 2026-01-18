@@ -24,3 +24,12 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.gf-grid {
+  background-color: #F8FAFC;
+  background-image:
+    linear-gradient(#D6DBE5 1px, transparent 1px),
+    linear-gradient(90deg, #D6DBE5 1px, transparent 1px);
+  background-size: 100px 100px;
+}
+
