@@ -1,4 +1,3 @@
-//executive-board/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -32,24 +31,37 @@ function MemberCard({
     gray: "bg-[#cfd6e6] text-[#1C2B5A]",
   };
 
-  const photo =
-    item.member_profiles?.photo_url &&
-    item.member_profiles.photo_url.replace(
-      "/upload/",
-      "/upload/c_thumb,g_face,z_0.3,w_350,h_380/"
-    );
+  // FIX: Pastikan photo_url ada dan valid sebelum transformasi
+  const photoUrl = item.member_profiles?.photo_url;
+  const photo = photoUrl && photoUrl.trim() !== ""
+    ? photoUrl.replace(
+        "/upload/",
+        "/upload/c_thumb,g_face,z_0.3,w_350,h_380/"
+      )
+    : null;
 
   return (
     <div className="relative group w-full max-w-70 mx-auto">
       <div className="absolute -inset-2 bg-[#E6B52C]/40 blur-xl opacity-0 group-hover:opacity-100 transition" />
       <div className={`${colors[variant]} relative rounded-2xl p-4 shadow-xl h-full flex flex-col`}>
         <div className="w-full aspect-4/5 rounded-xl overflow-hidden bg-black/20 mb-4">
-          {photo && (
+          {photo ? (
             <img
               src={photo}
               className="w-full h-full object-cover"
-              alt={item.member_profiles.members.name} 
+              alt={item.member_profiles?.members?.name || "Member"} 
+              onError={(e) => {
+                // Fallback jika transformasi gagal, gunakan URL original
+                const target = e.target as HTMLImageElement;
+                if (target.src !== photoUrl) {
+                  target.src = photoUrl;
+                }
+              }}
             />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-xs opacity-50">
+              NO PHOTO
+            </div>
           )}
         </div>
         <div className="flex-1 flex flex-col justify-between">

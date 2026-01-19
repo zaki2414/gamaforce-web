@@ -173,7 +173,7 @@ export default function AdminSponsorsPage() {
                 <button 
                   onClick={upload}
                   disabled={loading}
-                  className="w-full bg-slate-900 hover:bg-pink-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full bg-slate-900 hover:bg-pink-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
                   <Plus className="w-5 h-5" />
                   {loading ? "Proses Upload..." : "Upload Sponsor"}
@@ -202,7 +202,7 @@ export default function AdminSponsorsPage() {
                 </div>
               ) : (
                 data.map((s) => (
-                  <div key={s.id} className="group relative bg-white border-2 border-slate-100 rounded-3xl p-6 hover:border-[#E6B52C] hover:shadow-xl transition-all duration-300">
+                  <div key={s.id} className="group relative bg-white border-2 border-slate-100 rounded-3xl p-6 hover:border-pink-600 hover:shadow-xl transition-all duration-300">
                     <div className="h-28 flex items-center justify-center mb-4">
                       <img
                         src={supabase.storage.from("sponsors").getPublicUrl(s.logo_path).data.publicUrl}
@@ -214,7 +214,7 @@ export default function AdminSponsorsPage() {
                       <p className="text-sm font-black text-slate-700 truncate mb-2">{s.name}</p>
                       <button
                         onClick={() => remove(s)}
-                        className="inline-flex items-center gap-1.5 text-[10px] font-bold text-red-400 hover:text-red-600 uppercase tracking-widest transition-colors"
+                        className="inline-flex items-center gap-1.5 text-[10px] font-bold text-red-400 hover:text-red-600 uppercase tracking-widest transition-colors cursor-pointer"
                       >
                         <Trash2 className="w-3 h-3" /> Hapus
                       </button>

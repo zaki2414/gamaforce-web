@@ -11,6 +11,7 @@ const navItems = [
   { label: "Management", href: "/management" },
   { label: "Subteams", href: "/subteam" },
   { label: "Achievements", href: "/achievements" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Contact Us", href: "/contact" },
 ];
 

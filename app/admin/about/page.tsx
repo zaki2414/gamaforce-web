@@ -111,16 +111,16 @@ export default function AdminAboutPage() {
 
   if (initialLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white text-slate-900">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-white text-[#1C2B5A]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1C2B5A]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-white text-[#1C2B5A]">
       {/* Navbar */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+      <nav className="bg-white border-b border-[#1C2B5A] sticky top-0 z-10 shadow-sm">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/admin" className="p-2 hover:bg-slate-100 rounded-lg transition text-slate-600">
@@ -129,8 +129,8 @@ export default function AdminAboutPage() {
             <h1 className="text-xl font-black tracking-tight">About & Contact</h1>
           </div>
           {message && (
-            <div className="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-full text-xs font-bold animate-in fade-in zoom-in">
-              <CheckCircle2 className="w-3 h-3 text-green-400" /> {message}
+            <div className="flex items-center gap-2 bg-[#1C2B5A] text-white px-4 py-2 rounded-full text-xs font-bold animate-in fade-in zoom-in">
+              <CheckCircle2 className="w-3 h-3 text-white-400" /> {message}
             </div>
           )}
         </div>
@@ -141,44 +141,44 @@ export default function AdminAboutPage() {
           
           {/* SECTION: ABOUT CONTENT */}
           <section>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="bg-indigo-100 text-indigo-600 p-2 rounded-lg">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="bg-[#1C2B5A] text-white p-2 rounded-lg">
                 <Settings2 className="w-5 h-5" />
               </div>
               <h2 className="text-2xl font-black">Profil Organisasi</h2>
             </div>
 
-            <div className="bg-slate-50 border-2 border-slate-100 rounded-4xl p-8 shadow-sm">
+            <div className="bg-[#1C2B5A]/10 border-2 border-[#1C2B5A] rounded-4xl p-8 shadow-sm">
               <div className="space-y-6">
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Judul Besar</label>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-[#1C2B5A] mb-2">Judul Besar</label>
                   <input
                     value={about?.title || ""}
                     onChange={(e) => setAbout({ ...about, title: e.target.value })}
-                    className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-indigo-500 outline-none transition-all font-bold text-lg"
+                    className="w-full p-4 bg-white border-2 border-[#1C2B5A]/60 rounded-2xl focus:border-[#1C2B5A] outline-none transition-all font-bold text-lg"
                     placeholder="Contoh: Tentang Kami"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Deskripsi Narasi</label>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-border-[#1C2B5A] mb-2">Deskripsi Narasi</label>
                   <textarea
                     value={about?.description || ""}
                     onChange={(e) => setAbout({ ...about, description: e.target.value })}
                     rows={6}
-                    className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-indigo-500 outline-none transition-all font-medium leading-relaxed"
+                    className="w-full p-4 bg-white border-2 border-[#1C2B5A]/60 rounded-2xl focus:border-[#1C2B5A] outline-none transition-all font-medium leading-relaxed"
                     placeholder="Tuliskan sejarah atau visi misi organisasi..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Link Video YouTube</label>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-border-[#1C2B5A] mb-2">Link Video YouTube</label>
                   <div className="relative">
                     <Youtube className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-red-500" />
                     <input
                       value={about?.youtube_url || ""}
                       onChange={(e) => setAbout({ ...about, youtube_url: e.target.value })}
-                      className="w-full pl-12 pr-4 py-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-indigo-500 outline-none transition-all font-mono text-sm"
+                      className="w-full pl-12 pr-4 py-4 bg-white border-2 border-[#1C2B5A]/60 rounded-2xl focus:border-[#1C2B5A] outline-none transition-all font-mono text-sm"
                       placeholder="https://youtube.com/watch?v=..."
                     />
                   </div>
@@ -187,7 +187,7 @@ export default function AdminAboutPage() {
                 <button 
                   onClick={saveAbout}
                   disabled={loading}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-indigo-100 transition-all flex items-center gap-2 active:scale-95"
+                  className="bg-[#1C2B5A] hover:bg-[#1C2B5A]/80 text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-[#1C2B5A]/10 transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
                 >
                   <Save className="w-5 h-5" />
                   {loading ? "Menyimpan..." : "Simpan Perubahan Profil"}
@@ -200,14 +200,14 @@ export default function AdminAboutPage() {
           <section>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
-                <div className="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
+                <div className="bg-[#E6B52C] text-white p-2 rounded-lg">
                   <Phone className="w-5 h-5" />
                 </div>
                 <h2 className="text-2xl font-black">Hubungi Kami</h2>
               </div>
               <button 
                 onClick={addContact}
-                className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl font-bold text-sm hover:bg-emerald-100 transition-colors border border-emerald-100"
+                className="flex items-center gap-2 text-[#E6B52C] hover:text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-[#E6B52C] transition-colors border border-[#E6B52C] cursor-pointer"
               >
                 <UserPlus className="w-4 h-4" /> Tambah Personel
               </button>
@@ -220,7 +220,7 @@ export default function AdminAboutPage() {
                 </div>
               ) : (
                 persons.map((p, i) => (
-                  <div key={p.id} className="group bg-white border-2 border-slate-100 p-4 rounded-2xl hover:border-emerald-500 transition-all shadow-sm flex flex-col md:flex-row gap-4">
+                  <div key={p.id} className="group bg-white border-2 border-slate-100 p-4 rounded-2xl hover:border-[#E6B52C] transition-all shadow-sm flex flex-col md:flex-row gap-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-1">
                       <input
                         placeholder="Nama Lengkap"
@@ -230,7 +230,7 @@ export default function AdminAboutPage() {
                           copy[i].name = e.target.value;
                           setPersons(copy);
                         }}
-                        className="p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm outline-none focus:bg-white focus:border-emerald-500 transition-all"
+                        className="p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm outline-none focus:bg-white focus:border-[#E6B52C] transition-all"
                       />
                       <input
                         placeholder="Jabatan (cth: GM)"
@@ -240,7 +240,7 @@ export default function AdminAboutPage() {
                           copy[i].role = e.target.value;
                           setPersons(copy);
                         }}
-                        className="p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm outline-none focus:bg-white focus:border-emerald-500 transition-all"
+                        className="p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm outline-none focus:bg-white focus:border-[#E6B52C] transition-all"
                       />
                       <input
                         placeholder="WhatsApp (cth: 0812...)"
@@ -250,21 +250,21 @@ export default function AdminAboutPage() {
                           copy[i].phone = e.target.value;
                           setPersons(copy);
                         }}
-                        className="p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm outline-none focus:bg-white focus:border-emerald-500 transition-all"
+                        className="p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm outline-none focus:bg-white focus:border-[#E6B52C] transition-all"
                       />
                     </div>
                     
                     <div className="flex gap-2 justify-end">
                       <button
                         onClick={() => saveContact(p)}
-                        className="p-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all shadow-md shadow-emerald-50 active:scale-90"
+                        className="p-3 text-[#E6B52C] hover:text-white border border-[#E6B52C] hover:bg-[#E6B52C] rounded-xl  transition-all active:scale-90 cursor-pointer"
                         title="Simpan Baris Ini"
                       >
                         <Save className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => deleteContact(p.id)}
-                        className="p-3 text-slate-300 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                        className="p-3  text-red-400 hover:text-white border border-red-400 hover:bg-red-400 rounded-xl transition-all cursor-pointer"
                         title="Hapus Kontak"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -278,10 +278,6 @@ export default function AdminAboutPage() {
 
         </div>
       </main>
-
-      <footer className="mt-20 py-8 text-center text-[10px] font-black text-slate-300 uppercase tracking-widest border-t border-slate-50">
-        Organization CMS • 2026 Edition
-      </footer>
     </div>
   );
 }

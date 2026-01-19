@@ -5,6 +5,19 @@ import { supabase } from "@/lib/supabaseClient";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import imageCompression from "browser-image-compression";
 import Link from "next/link";
+import { 
+  ArrowLeft, 
+  UserPlus, 
+  Search, 
+  Filter, 
+  Trash2, 
+  Camera, 
+  Calendar, 
+  User,
+  MoreHorizontal,
+  RefreshCw,
+  Image as ImageIcon
+} from "lucide-react";
 
 /* ================= TYPES ================= */
 
@@ -80,87 +93,48 @@ export default function AdminMemberProfilesPage() {
 
   const filteredProfiles = useMemo(() => {
     let filtered = [...profiles];
+    if (searchName) filtered = filtered.filter((p) => p.members?.name?.toLowerCase().includes(searchName.toLowerCase()));
+    if (filterBatch) filtered = filtered.filter((p) => p.batches?.id === filterBatch);
+    if (filterYear) filtered = filtered.filter((p) => p.year_order.toString() === filterYear);
 
-    if (searchName) {
-      filtered = filtered.filter((p) =>
-        p.members?.name?.toLowerCase().includes(searchName.toLowerCase())
-      );
-    }
-
-    if (filterBatch) {
-      filtered = filtered.filter((p) => p.batches?.id === filterBatch);
-    }
-
-    if (filterYear) {
-      filtered = filtered.filter((p) => p.year_order.toString() === filterYear);
-    }
-
-    return filtered.sort((a, b) => {
-      const nameA = a.members?.name?.toLowerCase() || "";
-      const nameB = b.members?.name?.toLowerCase() || "";
-      return nameA.localeCompare(nameB);
-    });
+    return filtered.sort((a, b) => (a.members?.name || "").localeCompare(b.members?.name || ""));
   }, [profiles, searchName, filterBatch, filterYear]);
 
-  /* ================= CREATE PROFILE ================= */
+  /* ================= ACTIONS ================= */
 
   async function createProfile() {
     if (!memberId || !batchId || !yearOrder) {
       setMessage("⚠️ Lengkapi semua field");
       return;
     }
-
     const { error } = await supabase.from("member_profiles").insert({
       member_id: memberId,
       batch_id: batchId,
       year_order: Number(yearOrder),
     });
-
-    if (error) {
-      setMessage(`❌ ${error.message}`);
-    } else {
+    if (error) setMessage(`❌ ${error.message}`);
+    else {
       setMessage("✅ Profile berhasil dibuat");
-      setMemberId("");
-      setBatchId("");
-      setYearOrder("1");
+      setMemberId(""); setBatchId(""); setYearOrder("1");
       loadAll();
     }
   }
 
-  /* ================= UPDATE YEAR ================= */
-
   async function updateYear(id: string, value: string) {
-    const { error } = await supabase
-      .from("member_profiles")
-      .update({ year_order: Number(value) })
-      .eq("id", id);
-
-    if (error) {
-      setMessage(`❌ ${error.message}`);
-    } else {
+    const { error } = await supabase.from("member_profiles").update({ year_order: Number(value) }).eq("id", id);
+    if (error) setMessage(`❌ ${error.message}`);
+    else {
       setMessage("✅ Year order updated");
       loadAll();
     }
   }
 
-  /* ================= UPLOAD PHOTO ================= */
-
   async function uploadPhoto(profileId: string, file: File) {
     setUploadingId(profileId);
     try {
-      const compressed = await imageCompression(file, {
-        maxSizeMB: 0.3,
-        maxWidthOrHeight: 1200,
-        useWebWorker: true,
-      });
-
+      const compressed = await imageCompression(file, { maxSizeMB: 0.3, maxWidthOrHeight: 1200, useWebWorker: true });
       const url = await uploadToCloudinary(compressed);
-
-      await supabase
-        .from("member_profiles")
-        .update({ photo_url: url })
-        .eq("id", profileId);
-
+      await supabase.from("member_profiles").update({ photo_url: url }).eq("id", profileId);
       setMessage("✅ Photo uploaded");
       loadAll();
     } catch (error) {
@@ -170,95 +144,87 @@ export default function AdminMemberProfilesPage() {
     }
   }
 
-  /* ================= DELETE PROFILE ================= */
-
   async function deleteProfile(id: string, name: string) {
-    if (!confirm(`Delete profile for ${name}? All assignments using it will break.`)) return;
+    if (!confirm(`Delete profile for ${name}?`)) return;
     const { error } = await supabase.from("member_profiles").delete().eq("id", id);
-    if (error) {
-      setMessage(`❌ ${error.message}`);
-    } else {
+    if (error) setMessage(`❌ ${error.message}`);
+    else {
       setMessage("✅ Profile deleted");
       loadAll();
     }
   }
 
-  function clearFilters() {
-    setSearchName("");
-    setFilterBatch("");
-    setFilterYear("");
-  }
-
-  /* ================= UI ================= */
-
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="animate-spin text-blue-600 text-4xl">⌛</div>
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 text-gray-900">
+    <div className="min-h-screen bg-white text-slate-900 font-sans">
       {/* Navbar */}
-      <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <nav className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link 
-              href="/admin" 
-              className="flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition font-medium"
-            >
-              ← Dashboard
+            <Link href="/admin" className="p-2 hover:bg-slate-100 rounded-lg transition text-slate-600">
+              <ArrowLeft className="w-5 h-5" />
             </Link>
-            <div className="h-6 w-px bg-gray-300" />
-            <h1 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              Member Profiles
-            </h1>
+            <h1 className="text-xl font-black tracking-tight text-slate-900">Member Profiles</h1>
           </div>
-          <div className="text-xs font-bold text-gray-400 uppercase bg-gray-100 px-3 py-1 rounded-full">
-            {profiles.length} Profiles
-          </div>
+          <span className="text-[10px] font-black bg-slate-100 px-3 py-1 rounded-full text-slate-500 uppercase tracking-widest">
+            {profiles.length} Total Profiles
+          </span>
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main className="max-w-6xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* LEFT: FORM & FILTERS */}
-          <div className="lg:col-span-4 space-y-6">
-            {/* Create Profile Card */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Add New Profile</h2>
-              <div className="space-y-4">
+          {/* LEFT: FORM & FILTER */}
+          <div className="lg:col-span-4 space-y-8">
+            <div className="p-8 rounded-3xl border-2 border-slate-100 bg-slate-50">
+              <div className="bg-blue-600 text-white w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-100">
+                <UserPlus className="w-6 h-6" />
+              </div>
+              <h2 className="text-2xl font-black mb-6">Tambah Profil</h2>
+              
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1">MEMBER</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-2">
+                    <User className="w-3 h-3" /> Pilih Member
+                  </label>
                   <select
                     value={memberId}
                     onChange={(e) => setMemberId(e.target.value)}
-                    className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-blue-500 focus:outline-none transition-all font-bold text-sm"
                   >
-                    <option value="">Select Member</option>
+                    <option value="">Pilih Member...</option>
                     {members.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
                   </select>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 mb-1">BATCH</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-2">
+                      <Calendar className="w-3 h-3" /> Batch
+                    </label>
                     <select
                       value={batchId}
                       onChange={(e) => setBatchId(e.target.value)}
-                      className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-blue-500 focus:outline-none transition-all font-bold text-sm"
                     >
-                      <option value="">Year</option>
+                      <option value="">Tahun</option>
                       {batches.map((b) => <option key={b.id} value={b.id}>{b.year}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 mb-1">YEAR ORDER</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-2">
+                      <RefreshCw className="w-3 h-3" /> Order
+                    </label>
                     <select
                       value={yearOrder}
                       onChange={(e) => setYearOrder(e.target.value)}
-                      className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-blue-500 focus:outline-none transition-all font-bold text-sm"
                     >
                       <option value="1">Year 1</option>
                       <option value="2">Year 2</option>
@@ -268,135 +234,115 @@ export default function AdminMemberProfilesPage() {
 
                 <button
                   onClick={createProfile}
-                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition active:scale-95"
+                  className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-xl shadow-blue-100 transition active:scale-95 cursor-pointer"
                 >
                   Create Profile
                 </button>
+
                 {message && (
-                  <p className={`text-center text-xs font-bold p-2 rounded-lg ${message.includes("✅") ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"}`}>
+                  <div className={`p-4 rounded-xl text-xs font-bold text-center ${message.includes("✅") ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"}`}>
                     {message}
-                  </p>
+                  </div>
                 )}
               </div>
             </div>
 
-            {/* Filter Card */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Search & Filter</h2>
-              <div className="space-y-3">
+            {/* Quick Filter */}
+            <div className="p-6 bg-white border-2 border-slate-100 rounded-3xl space-y-3">
+              <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-2">
+                <Filter className="w-3 h-3" /> Filter Data
+              </h3>
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
-                  type="text"
-                  placeholder="Filter by name..."
+                  placeholder="Cari profil..."
+                  className="w-full pl-11 pr-4 py-3 bg-slate-50 rounded-xl text-sm font-bold outline-none focus:border-2 focus:border-blue-500"
                   value={searchName}
                   onChange={(e) => setSearchName(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"
                 />
-                <select 
-                  value={filterBatch} 
-                  onChange={(e) => setFilterBatch(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"
-                >
-                  <option value="">All Batches</option>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <select value={filterBatch} onChange={(e) => setFilterBatch(e.target.value)} className="p-3 bg-slate-50 rounded-xl text-xs font-bold outline-none focus:border-2 focus:border-blue-500">
+                  <option value="">Semua Batch</option>
                   {batches.map(b => <option key={b.id} value={b.id}>{b.year}</option>)}
                 </select>
-                <select 
-                  value={filterYear} 
-                  onChange={(e) => setFilterYear(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"
-                >
-                  <option value="">All Year Orders</option>
+                <select value={filterYear} onChange={(e) => setFilterYear(e.target.value)} className="p-3 bg-slate-50 rounded-xl text-xs font-bold outline-none focus:border-2 focus:border-blue-500">
+                  <option value="">Semua Year</option>
                   <option value="1">Year 1</option>
                   <option value="2">Year 2</option>
                 </select>
-                {(searchName || filterBatch || filterYear) && (
-                  <button onClick={clearFilters} className="w-full text-xs font-bold text-red-500 pt-2">
-                    RESET FILTERS
-                  </button>
-                )}
               </div>
             </div>
           </div>
 
-          {/* RIGHT: DATA TABLE */}
+          {/* RIGHT: DATA LIST */}
           <div className="lg:col-span-8">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className="bg-gray-50 border-b border-gray-100">
-                      <th className="p-4 text-xs font-bold text-gray-400 uppercase">Profile</th>
-                      <th className="p-4 text-xs font-bold text-gray-400 uppercase">Batch</th>
-                      <th className="p-4 text-xs font-bold text-gray-400 uppercase">Status</th>
-                      <th className="p-4 text-xs font-bold text-gray-400 uppercase text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-50">
-                    {filteredProfiles.length === 0 ? (
-                      <tr><td colSpan={4} className="p-20 text-center text-gray-400">No profiles found.</td></tr>
-                    ) : (
-                      filteredProfiles.map((p) => (
-                        <tr key={p.id} className="hover:bg-blue-50/40 transition group">
-                          <td className="p-4">
-                            <div className="flex items-center gap-4">
-                              <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-100 border border-gray-200">
-                                {p.photo_url ? (
-                                  <img src={p.photo_url} className="w-full h-full object-cover" alt="" />
-                                ) : (
-                                  <div className="flex items-center justify-center h-full text-[10px] text-gray-400">NO PIC</div>
-                                )}
-                                {uploadingId === p.id && (
-                                  <div className="absolute inset-0 bg-white/80 flex items-center justify-center animate-pulse">⏳</div>
-                                )}
-                              </div>
-                              <div>
-                                <div className="font-bold text-gray-800">{p.members?.name}</div>
-                                <label className="text-[10px] font-bold text-blue-600 hover:underline cursor-pointer uppercase">
-                                  Change Photo
-                                  <input 
-                                    type="file" 
-                                    className="hidden" 
-                                    accept="image/*"
-                                    onChange={(e) => e.target.files?.[0] && uploadPhoto(p.id, e.target.files[0])} 
-                                  />
-                                </label>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="p-4">
-                            <div className="text-sm font-bold text-gray-600">{p.batches?.year}</div>
-                          </td>
-                          <td className="p-4">
-                            <select
-                              value={String(p.year_order)}
-                              onChange={(e) => updateYear(p.id, e.target.value)}
-                              className="bg-gray-100 border-none text-[10px] font-bold uppercase py-1 px-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                              <option value="1">Year 1</option>
-                              <option value="2">Year 2</option>
-                            </select>
-                          </td>
-                          <td className="p-4 text-right">
-                            <button 
-                              onClick={() => deleteProfile(p.id, p.members?.name)}
-                              className="p-2 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition"
-                            >
-                              🗑️
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <p className="mt-4 text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center">
-              Member Profile Management • Internal
-            </p>
-          </div>
+            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
+              Daftar Profil Terintegrasi <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-600 font-mono">{filteredProfiles.length}</span>
+            </h3>
 
+            <div className="space-y-3">
+              {filteredProfiles.length === 0 ? (
+                <div className="p-20 border-2 border-dashed border-slate-100 rounded-3xl text-center text-slate-400 font-bold">
+                  Data tidak ditemukan
+                </div>
+              ) : (
+                filteredProfiles.map((p) => (
+                  <div key={p.id} className="group flex items-center justify-between p-4 bg-white border-2 border-slate-50 rounded-2xl hover:border-blue-200 hover:shadow-sm transition-all">
+                    <div className="flex items-center gap-4 flex-1 min-w-0">
+                      <div className="relative w-14 h-14 shrink-0 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
+                        {p.photo_url ? (
+                          <img src={p.photo_url} className="w-full h-full object-cover" alt="" />
+                        ) : (
+                          <div className="flex items-center justify-center h-full"><ImageIcon className="w-5 h-5 text-slate-300" /></div>
+                        )}
+                        {uploadingId === p.id && (
+                          <div className="absolute inset-0 bg-blue-600/20 backdrop-blur-sm flex items-center justify-center">
+                            <RefreshCw className="w-4 h-4 text-white animate-spin" />
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-black text-slate-900 truncate leading-none">{p.members?.name}</h4>
+                          <span className="text-[10px] font-black bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md uppercase">
+                            {p.batches?.year}
+                          </span>
+                        </div>
+                        <label className="inline-flex items-center gap-1.5 text-[10px] font-black text-blue-500 hover:text-blue-700 cursor-pointer uppercase tracking-wider transition-colors">
+                          <Camera className="w-3 h-3" /> Ganti Foto
+                          <input type="file" className="hidden" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadPhoto(p.id, e.target.files[0])} />
+                        </label>
+                      </div>
+
+                      <div className="px-4">
+                         <select
+                            value={String(p.year_order)}
+                            onChange={(e) => updateYear(p.id, e.target.value)}
+                            className="bg-slate-100 border-none text-[10px] font-black uppercase py-1.5 px-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer"
+                          >
+                            <option value="1">Year 1</option>
+                            <option value="2">Year 2</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                      <button
+                        onClick={() => deleteProfile(p.id, p.members?.name)}
+                        className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all cursor-pointer"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
