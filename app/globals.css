@@ -3,13 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,7 +17,14 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+.font-title {
+    font-family: var(--font-title);
+}
+
+.font-sans {
+    font-family: var(--font-body);
 }
 
 .gf-grid {
@@ -33,3 +35,25 @@ body {
   background-size: 100px 100px;
 }
 
+.gf-grid-blue {
+  background-color: #E6B52C;
+  background-image:
+    linear-gradient(#a98a36 1px, transparent 1px),
+    linear-gradient(90deg, #a98a36 1px, transparent 1px);
+  background-size: 100px 100px;
+}
+
+@layer utilities {
+  .text-outline {
+    -webkit-text-stroke: 1px #1C2B5A;
+  }
+  
+  .text-outline-white {
+    -webkit-text-stroke: 1px white;
+  }
+
+  .text-transparent-outline {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 4px #E6B52C;
+  }
+}

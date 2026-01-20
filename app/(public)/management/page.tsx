@@ -1,8 +1,8 @@
-//management/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import SponsorsFooter from "@/components/home/SponsorFooter";
 
 /* ---------- Helpers ---------- */
 function groupByTeam(data: any[]) {
@@ -52,36 +52,47 @@ function MemberCard({
     gray: "bg-[#cfd6e6] text-[#1C2B5A]",
   };
 
-  const photo =
-    item.member_profiles?.photo_url &&
-    item.member_profiles.photo_url.replace(
-      "/upload/",
-      "/upload/c_thumb,g_face,z_0.3,w_350,h_380/"
-    );
+  const photoUrl = item.member_profiles?.photo_url;
+  const photo = photoUrl && photoUrl.trim() !== ""
+    ? photoUrl.replace(
+        "/upload/",
+        "/upload/c_thumb,g_face,z_0.3,w_350,h_380/"
+      )
+    : null;
 
   return (
     <div className="relative group w-full max-w-70 mx-auto">
-      <div className="absolute -inset-2 bg-[#E6B52C]/40 blur-xl opacity-0 group-hover:opacity-100 transition" />
-      <div className={`${colors[variant]} relative rounded-2xl p-4 shadow-xl h-full flex flex-col`}>
+      <div className="absolute -inset-2 bg-[#E6B52C]/40 blur-xl opacity-0 group-hover:opacity-100 transition duration-300" />
+      <div className={`${colors[variant]} relative rounded-2xl p-4 shadow-xl h-full flex flex-col transition-transform duration-300 group-hover:-translate-y-1`}>
         <div className="w-full aspect-4/5 rounded-xl overflow-hidden bg-black/20 mb-4">
-          {photo && (
+          {photo ? (
             <img
               src={photo}
               className="w-full h-full object-cover"
-              alt={item.member_profiles.members.name} 
+              alt={item.member_profiles?.members?.name || "Member"} 
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (target.src !== photoUrl) {
+                  target.src = photoUrl;
+                }
+              }}
             />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-xs opacity-50 font-sans">
+              NO PHOTO
+            </div>
           )}
         </div>
         <div className="flex-1 flex flex-col justify-between">
           <div>
-            <div className="font-bold text-center mb-1 line-clamp-2">
+            <div className="font-bold text-center mb-1 line-clamp-2 font-sans text-sm sm:text-base">
               {item.member_profiles?.members?.name || "Unknown"}
             </div>
-            <div className="text-sm opacity-80 text-center mb-2 line-clamp-1">
+            <div className="text-xs sm:text-sm opacity-80 text-center mb-2 line-clamp-1 font-sans">
               {item.positions?.name || "-"}
             </div>
           </div>
-          <div className="text-xs opacity-70 text-center line-clamp-2">
+          <div className="text-[10px] sm:text-xs opacity-70 text-center line-clamp-2 font-sans">
             {item.member_profiles?.members?.programs?.name || "-"} – {item.member_profiles?.members?.program_batch || "-"}
           </div>
         </div>
@@ -319,19 +330,19 @@ export default function ManagementPage() {
   return (
     <div className="bg-white min-h-screen gf-grid">
       {/* HERO */}
-      <div className="relative px-8 py-24 bg-[#0F1E3D] text-white overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-125 h-125 bg-[#E6B52C]/20 blur-[140px] rounded-full" />
-        <div className="absolute bottom-0 right-0 w-100 h-100 bg-white/10 blur-[120px] rounded-full" />
+      <div className="relative px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24 bg-[#0F1E3D] text-white overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-125 h-125 sm:w-150 sm:h-150 bg-[#E6B52C]/20 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 right-0 w-100 h-100 sm:w-125 sm:h-125 bg-white/10 blur-[100px] rounded-full" />
 
-        <div className="relative max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-          <div>
-            <h1 className="text-5xl font-extrabold mb-4">
-              {group ? group.name : <div className="h-12 bg-white/10 animate-pulse rounded-lg w-3/4" />}
+        <div className="relative max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+          <div className="order-2 md:order-1">
+            <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl mb-4 font-title">
+              {group ? group.name : <div className="h-10 sm:h-12 bg-white/10 animate-pulse rounded-lg w-3/4" />}
             </h1>
-            <div className="text-[#E6B52C] font-bold mb-4">
+            <div className="text-[#E6B52C] font-bold mb-4 font-sans text-sm sm:text-base">
               {group ? group.tagline : <div className="h-5 bg-white/10 animate-pulse rounded w-1/2" />}
             </div>
-            <div className="text-white/80 max-w-xl">
+            <div className="text-white/80 max-w-xl font-sans text-sm sm:text-base">
               {group ? group.description : (
                 <div className="space-y-2">
                   <div className="h-4 bg-white/10 animate-pulse rounded w-full" />
@@ -340,27 +351,35 @@ export default function ManagementPage() {
               )}
             </div>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center order-2 md:order-1">
             {group?.logo_path ? (
               <img 
                 src={supabase.storage.from("subteam-logo").getPublicUrl(group.logo_path.trim()).data.publicUrl} 
-                className="w-64 drop-shadow-2xl" 
+                className="w-40 sm:w-48 md:w-56 lg:w-64 drop-shadow-2xl" 
                 alt={group.name}
               />
             ) : (
-              <div className="w-64 h-64 bg-white/10 animate-pulse rounded-full" />
+              <div className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 bg-white/10 animate-pulse rounded-full" />
             )}
           </div>
         </div>
       </div>
 
       {/* CONTENT */}
-      <div className="px-8 py-10 max-w-7xl mx-auto">
-        {/* Year Tabs */}
-        <div className="mb-10">
-          <div className="w-full h-12 bg-[#E6B52C] rounded-md flex items-end px-8 gap-12">
+      <div className="px-4 sm:px-6 md:px-8 py-8 md:py-10 max-w-7xl mx-auto">
+        {/* Year Tabs - Responsive Horizontal Scroll */}
+        <div className="mb-12 md:mb-16 overflow-hidden">
+          <div className="w-full min-h-12 bg-[#E6B52C] rounded-md flex items-end px-4 sm:px-6 md:px-8 gap-6 sm:gap-8 md:gap-12 font-title overflow-x-auto scrollbar-hide">
             {years.length > 0 ? years.map((y) => (
-              <button key={y} onClick={() => setYear(y)} className={`pb-2 text-lg font-bold ${year === y ? "text-[#1C2B5A] border-b-4 border-[#1C2B5A]" : "text-white hover:text-[#584614]"}`}>
+              <button 
+                key={y} 
+                onClick={() => setYear(y)} 
+                className={`pb-2 text-base sm:text-lg whitespace-nowrap transition duration-300 cursor-pointer ${
+                  year === y 
+                  ? "text-[#1C2B5A] border-b-4 border-[#1C2B5A]" 
+                  : "text-white hover:text-[#886600]"
+                }`}
+              >
                 {y}
               </button>
             )) : <div className="h-8 w-20 bg-white/20 animate-pulse rounded mb-2" />}
@@ -368,12 +387,12 @@ export default function ManagementPage() {
         </div>
 
         {loading ? (
-          <div className="space-y-32">
+          <div className="space-y-24 md:space-y-32">
             {[1, 2].map((i) => (
               <div key={i} className="animate-pulse">
-                <div className="h-10 bg-gray-200 rounded-md w-48 mb-12" />
-                <div className="flex justify-center mb-16"><MemberCardSkeleton /></div>
-                <div className="flex flex-wrap justify-center gap-10">
+                <div className="h-8 sm:h-10 bg-gray-200 rounded-md w-40 sm:w-48 mb-8 md:mb-12 mx-auto" />
+                <div className="flex justify-center mb-12 md:mb-16"><MemberCardSkeleton /></div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 justify-items-center">
                   <MemberCardSkeleton />
                   <MemberCardSkeleton />
                   <MemberCardSkeleton />
@@ -384,23 +403,29 @@ export default function ManagementPage() {
           </div>
         ) : (
           <>
-            {data.length === 0 && <p className="text-[#1C2B5A] text-center font-bold text-xl py-20">No data for this year.</p>}
+            {data.length === 0 && (
+              <p className="text-[#1C2B5A] text-center font-bold text-lg sm:text-xl py-20 md:py-24 font-sans">
+                No data for this year.
+              </p>
+            )}
             {grouped.map(({ team, leader, staff }) => (
-              <section key={team} className="mb-20">
-                <h2 className="text-4xl font-extrabold text-[#1C2B5A] mb-12">{team}</h2>
+              <section key={team} className="mb-12 md:mb-16 last:mb-0">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl text-center font-extrabold text-[#1C2B5A] mb-8 md:mb-12 font-title">
+                  {team}
+                </h2>
                 
                 {/* Leaders - Always Center */}
                 {leader.length > 0 && (
-                  <div className="mb-16 flex justify-center">
+                  <div className="mb-16 md:mb-24 flex justify-center">
                     {leader.map((item) => (
                       <MemberCard key={item.id} item={item} variant="gold" />
                     ))}
                   </div>
                 )}
                 
-                {/* Staff Members - 4 cards per row with flex-wrap */}
+                {/* Staff Members - Responsive Grid: 1 → 2 → 4 columns */}
                 {staff.length > 0 && (
-                  <div className="flex flex-wrap justify-center gap-10">
+                    <div className="flex flex-wrap justify-center gap-10">
                     {staff.map((item, i) => (
                       <div
                         key={item.id}
@@ -419,6 +444,18 @@ export default function ManagementPage() {
           </>
         )}
       </div>
+      <SponsorsFooter />
+
+      <style jsx global>{`
+        /* Hide scrollbar for year tabs */
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 }

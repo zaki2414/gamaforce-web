@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import SponsorsFooter from "@/components/home/SponsorFooter";
 
 /* ---------- Skeleton Card ---------- */
 function SubteamCardSkeleton() {
@@ -52,17 +53,17 @@ function SubteamCard({
         )}
 
         <div className="text-center">
-          <h3 className="text-2xl font-extrabold mb-2 uppercase tracking-tight">
+          <h3 className="text-2xl mb-2 tracking-tight font-title">
             {team.name}
           </h3>
           {team.tagline && (
-            <p className="text-sm font-medium opacity-80 leading-snug">
+            <p className="text-sm font-medium font-sans">
               {team.tagline}
             </p>
           )}
         </div>
 
-        <div className="mt-8 flex items-center gap-2 font-bold text-sm uppercase tracking-widest opacity-0 group-hover:opacity-100 transition duration-300">
+        <div className="mt-8 flex items-center gap-2 font-bold text-sm uppercase tracking-widest opacity-0 group-hover:opacity-100 transition duration-300 font-sans">
           Enter Squadron <span>→</span>
         </div>
       </div>
@@ -98,10 +99,10 @@ export default function SubteamOverviewPage() {
         <div className="absolute -bottom-40 -right-10 w-80 h-80 bg-white/60 blur-[100px] rounded-full" />
 
         <div className="relative max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">
+          <h1 className="text-3xl md:text-5xl mb-4 tracking-tight font-title">
             Our <span className="text-[#1C2B5A]">Subteams</span>
           </h1>
-          <p className="text-[#1C2B5A] max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="text-[#1C2B5A] max-w-2xl mx-auto text-lg leading-relaxed font-sans">
             Gamaforce is divided into several specialized engineering units. 
             Each squadron focuses on different flight platforms and technological challenges.
           </p>
@@ -146,10 +147,11 @@ export default function SubteamOverviewPage() {
 
         {!loading && teams.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-gray-500 font-medium">No subteams found.</p>
+            <p className="text-gray-500 font-medium font-sans">No subteams found.</p>
           </div>
         )}
       </div>
+      <SponsorsFooter />
     </div>
   );
 }

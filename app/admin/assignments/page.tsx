@@ -93,7 +93,7 @@ export default function AdminAssignmentsPage() {
   async function loadInitial() {
     setInitialLoading(true);
     const [t, p, prof] = await Promise.all([
-      supabase.from("teams").select("id,name,type").order("type"),
+      supabase.from("teams").select("id,name,type").order("name"),
       supabase.from("positions").select("id,name,scope,priority").order("priority"),
       supabase
         .from("member_profiles")
@@ -273,29 +273,29 @@ export default function AdminAssignmentsPage() {
                 {editingId ? <Edit3 className="w-6 h-6" /> : <Users className="w-6 h-6" />}
               </div>
               <h2 className="text-2xl font-black mb-2">{editingId ? "Edit Penugasan" : "Tambah Penugasan"}</h2>
-              <p className="text-slate-500 mb-8 font-medium text-sm">Tentukan tim, posisi, dan unit untuk anggota tertentu.</p>
+              <p className="text-slate-500 mb-8 font-medium text-sm">Tentukan tim, posisi, dan subtim untuk anggota tertentu.</p>
 
               <div className="space-y-5">
                 <div>
-                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 flex items-center gap-2"><Briefcase className="w-3 h-3"/> Pilih Tim</label>
-                  <select value={teamId} onChange={(e) => setTeamId(e.target.value)} className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-orange-400 focus:outline-none transition-all font-bold">
-                    <option value="">-- Pilih Tim --</option>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 flex items-center gap-2"><Briefcase className="w-3 h-3"/> Tim</label>
+                  <select value={teamId} onChange={(e) => setTeamId(e.target.value)} className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-orange-400 focus:outline-none transition-all font-bold appearance-none">
+                    <option value="">Pilih Tim</option>
                     {teams.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
                   </select>
                 </div>
 
                 <div>
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 flex items-center gap-2"><ShieldCheck className="w-3 h-3"/> Posisi</label>
-                  <select value={positionId} onChange={(e) => setPositionId(e.target.value)} disabled={!teamId} className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-orange-400 focus:outline-none transition-all font-bold disabled:opacity-50">
-                    <option value="">-- Pilih Posisi --</option>
+                  <select value={positionId} onChange={(e) => setPositionId(e.target.value)} disabled={!teamId} className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-orange-400 focus:outline-none transition-all font-bold disabled:opacity-50 appearance-none">
+                    <option value="">Pilih Posisi</option>
                     {filteredPositions.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
                   </select>
                 </div>
 
                 {units.length > 0 && (
                   <div>
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 flex items-center gap-2"> Unit (Opsional)</label>
-                    <select value={unitId} onChange={(e) => setUnitId(e.target.value)} className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-orange-400 focus:outline-none transition-all font-bold">
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 flex items-center gap-2"> Subtim (Opsional)</label>
+                    <select value={unitId} onChange={(e) => setUnitId(e.target.value)} className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-orange-400 focus:outline-none transition-all font-bold appearance-none">
                       <option value="">Tanpa Unit</option>
                       {units.map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}
                     </select>
@@ -304,8 +304,8 @@ export default function AdminAssignmentsPage() {
 
                 <div>
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 flex items-center gap-2"><UserCircle className="w-3 h-3"/> Pilih Anggota</label>
-                  <select value={profileId} onChange={(e) => setProfileId(e.target.value)} className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-orange-400 focus:outline-none transition-all font-bold">
-                    <option value="">-- Pilih Anggota --</option>
+                  <select value={profileId} onChange={(e) => setProfileId(e.target.value)} className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-orange-400 focus:outline-none transition-all font-bold appearance-none">
+                    <option value="">Pilih Anggota</option>
                     {profiles.map((p) => (
                       <option key={p.id} value={p.id}>{p.members.name} ({p.batches.year})</option>
                     ))}

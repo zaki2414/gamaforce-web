@@ -171,9 +171,6 @@ export default function AdminMemberProfilesPage() {
             </Link>
             <h1 className="text-xl font-black tracking-tight text-slate-900">Member Profiles</h1>
           </div>
-          <span className="text-[10px] font-black bg-slate-100 px-3 py-1 rounded-full text-slate-500 uppercase tracking-widest">
-            {profiles.length} Total Profiles
-          </span>
         </div>
       </nav>
 
@@ -186,7 +183,10 @@ export default function AdminMemberProfilesPage() {
               <div className="bg-blue-600 text-white w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-100">
                 <UserPlus className="w-6 h-6" />
               </div>
-              <h2 className="text-2xl font-black mb-6">Tambah Profil</h2>
+              <h2 className="text-2xl font-black mb-2">Tambah Profil</h2>
+              <p className="text-slate-500 mb-8 font-medium text-sm leading-relaxed">
+                Tambahkan profil baru dengan memilih foto dan urutan tahun anggota
+              </p>
               
               <div className="space-y-5">
                 <div>
@@ -196,7 +196,7 @@ export default function AdminMemberProfilesPage() {
                   <select
                     value={memberId}
                     onChange={(e) => setMemberId(e.target.value)}
-                    className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-blue-500 focus:outline-none transition-all font-bold text-sm"
+                    className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-blue-500 focus:outline-none transition-all font-bold text-sm appearance-none"
                   >
                     <option value="">Pilih Member...</option>
                     {members.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
@@ -211,7 +211,7 @@ export default function AdminMemberProfilesPage() {
                     <select
                       value={batchId}
                       onChange={(e) => setBatchId(e.target.value)}
-                      className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-blue-500 focus:outline-none transition-all font-bold text-sm"
+                      className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-blue-500 focus:outline-none transition-all font-bold text-sm appearance-none"
                     >
                       <option value="">Tahun</option>
                       {batches.map((b) => <option key={b.id} value={b.id}>{b.year}</option>)}
@@ -224,7 +224,7 @@ export default function AdminMemberProfilesPage() {
                     <select
                       value={yearOrder}
                       onChange={(e) => setYearOrder(e.target.value)}
-                      className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-blue-500 focus:outline-none transition-all font-bold text-sm"
+                      className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-blue-500 focus:outline-none transition-all font-bold text-sm appearance-none"
                     >
                       <option value="1">Year 1</option>
                       <option value="2">Year 2</option>

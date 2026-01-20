@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import SponsorsFooter from "@/components/home/SponsorFooter";
 
 /* ---------- Skeleton Card ---------- */
 function MemberCardSkeleton() {
@@ -51,7 +52,6 @@ function MemberCard({
               className="w-full h-full object-cover"
               alt={item.member_profiles?.members?.name || "Member"} 
               onError={(e) => {
-                // Fallback jika transformasi gagal, gunakan URL original
                 const target = e.target as HTMLImageElement;
                 if (target.src !== photoUrl) {
                   target.src = photoUrl;
@@ -59,21 +59,21 @@ function MemberCard({
               }}
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-xs opacity-50">
+            <div className="w-full h-full flex items-center justify-center text-xs opacity-50 font-sans">
               NO PHOTO
             </div>
           )}
         </div>
         <div className="flex-1 flex flex-col justify-between">
           <div>
-            <div className="font-bold text-center mb-1 line-clamp-2">
+            <div className="font-bold text-center mb-1 line-clamp-2 font-sans">
               {item.member_profiles?.members?.name || "Unknown"}
             </div>
-            <div className="text-sm opacity-80 text-center mb-2 line-clamp-1">
+            <div className="text-sm opacity-80 text-center mb-2 line-clamp-1 font-sans">
               {item.positions?.name || "-"}
             </div>
           </div>
-          <div className="text-xs opacity-70 text-center line-clamp-2">
+          <div className="text-xs opacity-70 text-center line-clamp-2 font-sans">
             {item.member_profiles?.members?.programs?.name || "-"} – {item.member_profiles?.members?.program_batch || "-"}
           </div>
         </div>
@@ -198,20 +198,20 @@ export default function ExecutiveBoardPage() {
 
   return (
     <div className="min-h-screen bg-white gf-grid">
-      {/* HERO */}
-      <div className="relative px-8 py-24 bg-[#0F1E3D] text-white overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-125 h-125 bg-[#E6B52C]/20 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 right-0 w-100 h-100 bg-white/10 blur-[100px] rounded-full" />
+      {/* HERO - RESPONSIVE */}
+      <div className="relative px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24 bg-[#0F1E3D] text-white overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-125 h-125 sm:w-150 sm:h-150 bg-[#E6B52C]/20 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 right-0 w-100 h-100 sm:w-125 sm:h-125 bg-white/10 blur-[100px] rounded-full" />
 
-        <div className="relative max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-          <div>
-            <h1 className="text-5xl font-extrabold mb-4">
-              {team ? team.name : <div className="h-12 bg-white/10 animate-pulse rounded-lg w-3/4" />}
+        <div className="relative max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+          <div className="order-2 md:order-1">
+            <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl mb-4 font-title">
+              {team ? team.name : <div className="h-10 sm:h-12 bg-white/10 animate-pulse rounded-lg w-3/4" />}
             </h1>
-            <div className="text-[#E6B52C] font-bold mb-4">
+            <div className="text-[#E6B52C] font-bold mb-4 font-sans text-sm sm:text-base">
               {team ? team.tagline : <div className="h-5 bg-white/10 animate-pulse rounded w-1/2" />}
             </div>
-            <div className="text-white/80 max-w-xl">
+            <div className="text-white/80 max-w-xl font-sans text-sm sm:text-base">
               {team ? team.description : (
                 <div className="space-y-2">
                   <div className="h-4 bg-white/10 animate-pulse rounded w-full" />
@@ -221,34 +221,34 @@ export default function ExecutiveBoardPage() {
             </div>
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center order-1 md:order-2">
             {team?.logo_path ? (
               <img
                 src={supabase.storage.from("subteam-logo").getPublicUrl(team.logo_path).data.publicUrl}
-                className="w-64 drop-shadow-2xl"
+                className="w-40 sm:w-48 md:w-56 lg:w-64 drop-shadow-2xl"
                 alt={team.name}
               />
             ) : (
-              <div className="w-64 h-64 bg-white/10 animate-pulse rounded-full" />
+              <div className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 bg-white/10 animate-pulse rounded-full" />
             )}
           </div>
         </div>
       </div>
 
       {/* CONTENT */}
-      <div className="px-8 py-10 max-w-7xl mx-auto">
-        {/* Year Tabs */}
-        <div className="mb-15">
-          <div className="w-full h-12 bg-[#E6B52C] rounded-md flex items-end px-8 gap-12">
+      <div className="px-4 sm:px-6 md:px-8 py-8 md:py-10 max-w-7xl mx-auto">
+        {/* Year Tabs - RESPONSIVE */}
+        <div className="mb-10 md:mb-15 overflow-hidden">
+          <div className="w-full min-h-12 bg-[#E6B52C] rounded-md flex items-end px-4 sm:px-6 md:px-8 gap-6 sm:gap-8 md:gap-12 font-title overflow-x-auto scrollbar-hide">
             {years.length > 0 ? (
               years.map((y) => (
                 <button
                   key={y}
                   onClick={() => setYear(y)}
-                  className={`pb-2 text-lg font-bold ${
+                  className={`pb-2 text-base sm:text-lg whitespace-nowrap transition duration-300 cursor-pointer ${
                     year === y
-                      ? "text-[#1C2B5A] border-b-4 border-[#1C2B5A] cursor-pointer"
-                      : "text-white cursor-pointer"
+                      ? "text-[#1C2B5A] border-b-4 border-[#1C2B5A]"
+                      : "text-white hover:text-[#886600]"
                   }`}
                 >
                   {y}
@@ -272,7 +272,7 @@ export default function ExecutiveBoardPage() {
           </div>
         ) : (
           <>
-            {data.length === 0 && <p className="text-[#1C2B5A] text-center font-bold text-xl py-20">No data for this year.</p>}
+            {data.length === 0 && <p className="text-[#1C2B5A] text-center font-bold text-xl py-20 font-sans">No data for this year.</p>}
             
             {/* GENERAL MANAGER */}
             {general[0] && (
@@ -288,7 +288,7 @@ export default function ExecutiveBoardPage() {
               </div>
             )}
 
-            {/* TECHNICAL COUNCIL - 3 cards per row */}
+            {/* TECHNICAL COUNCIL */}
             {techMembers.length > 0 && (
               <div className="mb-20 flex flex-wrap justify-center gap-10">
                 {techMembers.map((item, i) => (
@@ -312,7 +312,7 @@ export default function ExecutiveBoardPage() {
               </div>
             )}
 
-            {/* NON-TECH COUNCIL - 3 cards per row */}
+            {/* NON-TECH COUNCIL */}
             {nonTechMembers.length > 0 && (
               <div className="mb-20 flex flex-wrap justify-center gap-10">
                 {nonTechMembers.map((item, i) => (
@@ -329,7 +329,7 @@ export default function ExecutiveBoardPage() {
               </div>
             )}
 
-            {/* PIC COUNCIL - 3 cards per row */}
+            {/* PIC COUNCIL */}
             {PIC.length > 0 && (
               <div className="flex flex-wrap justify-center gap-10">
                 {PIC.map((item, i) => (
@@ -348,6 +348,18 @@ export default function ExecutiveBoardPage() {
           </>
         )}
       </div>
+      <SponsorsFooter />
+
+      <style jsx global>{`
+        /* Hide scrollbar for year tabs */
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 }

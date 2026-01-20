@@ -166,7 +166,7 @@ export default function AdminBatchesPage() {
                   </label>
                   <input
                     type="number"
-                    placeholder="Contoh: 2026"
+                    placeholder="Contoh: 2027"
                     className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-sky-400 focus:ring-4 focus:ring-sky-50 focus:outline-none transition-all font-bold text-slate-800"
                     value={year}
                     onChange={(e) => setYear(e.target.value)}

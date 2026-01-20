@@ -166,9 +166,9 @@ export default function AdminAchievementsPage() {
               <div className={`${editingId ? "bg-amber-400 text-white" : "bg-amber-100 text-amber-700"} w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-colors`}>
                 {editingId ? <Edit3 className="w-6 h-6" /> : <Trophy className="w-6 h-6" />}
               </div>
-              <h2 className="text-2xl font-black mb-2">{editingId ? "Edit Prestasi" : "Input Prestasi"}</h2>
+              <h2 className="text-2xl font-black mb-2">{editingId ? "Edit Prestasi" : "Tambah Prestasi"}</h2>
               <p className="text-slate-500 mb-8 font-medium text-sm leading-relaxed">
-                {editingId ? "Perbarui informasi pencapaian tim yang sudah ada." : "Catat pencapaian terbaru tim atau individu untuk ditampilkan."}
+                {editingId ? "Perbarui informasi pencapaian tim yang sudah ada." : "Catat pencapaian terbaru tim untuk ditampilkan. Pastikan informasi sudah benar sebelum disimpan. Prestasi ditulis dalam bahasa inggris."}
               </p>
 
               <div className="space-y-5">
@@ -178,7 +178,7 @@ export default function AdminAchievementsPage() {
                   </label>
                   <input
                     type="number"
-                    placeholder="Contoh: 2025"
+                    placeholder="Contoh: 2026"
                     className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-amber-400 focus:ring-4 focus:ring-amber-50 focus:outline-none transition-all font-bold"
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
@@ -190,7 +190,7 @@ export default function AdminAchievementsPage() {
                     <Award className="w-3 h-3" /> Judul Prestasi
                   </label>
                   <input
-                    placeholder="Contoh: Juara 1 Gemastik"
+                    placeholder="Contoh: 1st Place in Fixed Wing Category at National UAV Competition"
                     className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-amber-400 focus:ring-4 focus:ring-amber-50 focus:outline-none transition-all font-bold"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -198,9 +198,9 @@ export default function AdminAchievementsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Deskripsi Singkat</label>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Deskripsi Singkat (OPSIONAL)</label>
                   <textarea
-                    placeholder="Jelaskan detail singkat tentang prestasi ini..."
+                    placeholder="Masukkan lokasi, tanggal, atau informasi tambahan lainnya"
                     rows={3}
                     className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-amber-400 focus:ring-4 focus:ring-amber-50 focus:outline-none transition-all font-medium text-sm"
                     value={description}
@@ -228,7 +228,7 @@ export default function AdminAchievementsPage() {
 
           <div className="lg:col-span-7">
             <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
-              History Prestasi <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-600">{data.length}</span>
+              Catatan Prestasi <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-600">{data.length}</span>
             </h3>
 
             <div className="space-y-4">

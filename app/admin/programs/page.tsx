@@ -149,9 +149,9 @@ export default function AdminProgramsPage() {
                 {editingId ? <Edit3 className="w-6 h-6" /> : <GraduationCap className="w-6 h-6" />}
               </div>
               
-              <h2 className="text-2xl font-black mb-2">{editingId ? "Edit Prodi" : "Tambah Prodi"}</h2>
+              <h2 className="text-2xl font-black mb-2">{editingId ? "Edit Prodi" : "Tambah Program Studi"}</h2>
               <p className="text-slate-500 mb-8 font-medium text-sm leading-relaxed">
-                {editingId ? "Perbarui nama program studi yang sudah terdaftar dalam sistem." : "Daftarkan bidang studi baru untuk referensi data anggota."}
+                {editingId ? "Perbarui nama program studi yang sudah terdaftar dalam sistem." : "Daftarkan bidang studi baru untuk referensi data anggota. Pastikan dalam bahasa inggris dan tidak ada typo"}
               </p>
 
               <div className="space-y-5">
@@ -160,7 +160,7 @@ export default function AdminProgramsPage() {
                     <Database className="w-3 h-3" /> Nama Program Studi
                   </label>
                   <input
-                    placeholder="Contoh: Teknik Informatika"
+                    placeholder="Contoh: Computer Science"
                     className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-violet-400 focus:ring-4 focus:ring-violet-50 focus:outline-none transition-all font-bold text-slate-800"
                     value={name}
                     onChange={(e) => setName(e.target.value)}

@@ -51,14 +51,14 @@ export default function AdminPage() {
 
   const menuItems = [
     { label: "Kelola Anggota", href: "/admin/members", icon: Users, color: "text-rose-600", bg: "bg-rose-50", hoverBorder: "hover:border-rose-400", hoverShadow: "hover:shadow-rose-100", desc: "Database Anggota" },
-    { label: "Member Profiles", href: "/admin/member-profiles", icon: UserCircle, color: "text-indigo-600", bg: "bg-indigo-50", hoverBorder: "hover:border-indigo-400", hoverShadow: "hover:shadow-indigo-100", desc: "Foto & Bio Tahunan" },
+    { label: "Kelola Profil Anggota", href: "/admin/member-profiles", icon: UserCircle, color: "text-indigo-600", bg: "bg-indigo-50", hoverBorder: "hover:border-indigo-400", hoverShadow: "hover:shadow-indigo-100", desc: "Foto & Bio Tahunan" },
     { label: "Kelola Assignment", href: "/admin/assignments", icon: UserPlus, color: "text-orange-600", bg: "bg-orange-50", hoverBorder: "hover:border-orange-400", hoverShadow: "hover:shadow-orange-100", desc: "Tim dan Posisi" },
     { label: "Kelola Angkatan", href: "/admin/batches", icon: Calendar, color: "text-sky-600", bg: "bg-sky-50", hoverBorder: "hover:border-sky-400", hoverShadow: "hover:shadow-sky-100", desc: "Tahun Periode Aktif" },
     { label: "Kelola Prodi", href: "/admin/programs", icon: GraduationCap, color: "text-violet-600", bg: "bg-violet-50", hoverBorder: "hover:border-violet-400", hoverShadow: "hover:shadow-violet-100", desc: "Daftar Program Studi" },
     { label: "Kelola Achievements", href: "/admin/achievements", icon: Trophy, color: "text-amber-600", bg: "bg-amber-50", hoverBorder: "hover:border-amber-400", hoverShadow: "hover:shadow-amber-100", desc: "Prestasi Tim" },
     { label: "Kelola Gallery", href: "/admin/gallery", icon: GalleryVerticalEnd, color: "text-teal-600", bg: "bg-teal-50", hoverBorder: "hover:border-teal-400", hoverShadow: "hover:shadow-teal-100", desc: "Dokumentasi" },
     { label: "Kelola Sponsor", href: "/admin/sponsors", icon: ImageIcon, color: "text-pink-600", bg: "bg-pink-50", hoverBorder: "hover:border-pink-400", hoverShadow: "hover:shadow-pink-100", desc: "Partner Logo" },
-    { label: "About & Contact", href: "/admin/about", icon: Info, color: "text-slate-600", bg: "bg-slate-50", hoverBorder: "hover:border-slate-400", hoverShadow: "hover:shadow-slate-100", desc: "Informasi Tim" },
+    { label: "Kelola Informasi & Kontak", href: "/admin/about", icon: Info, color: "text-slate-600", bg: "bg-slate-50", hoverBorder: "hover:border-slate-400", hoverShadow: "hover:shadow-slate-100", desc: "Informasi Tim" },
   ];
 
   return (
@@ -66,10 +66,10 @@ export default function AdminPage() {
       <nav className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="bg-blue-600 p-1.5 rounded-lg shadow-lg shadow-blue-100">
-              <LayoutDashboard className="w-4 h-4 text-white" />
+            <div className="p-2 bg-[#1C2B5A] rounded-lg transition text-slate-600">
+              <LayoutDashboard className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-base font-black tracking-tight text-slate-900">Admin Central</h1>
+            <h1 className="text-base font-black tracking-tight text-[#1C2B5A] font-title leading-5 pt-1">Admin <br /> Central</h1>
           </div>
           <button 
             onClick={logout}
@@ -83,8 +83,8 @@ export default function AdminPage() {
 
       <main className="max-w-6xl mx-auto px-6 py-12">
         <div className="mb-10">
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Halo, Admin</h2>
-          <p className="text-slate-400 text-sm font-bold uppercase tracking-widest mt-1">Sistem Manajemen Konten</p>
+          <h2 className="text-3xl font-black text-[#1C2B5A] tracking-tight font-title">Hello, Admin</h2>
+          <p className="text-slate-400 text-sm font-bold uppercase mt-1 tracking-[0.2em]">Content Management System</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

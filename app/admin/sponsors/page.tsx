@@ -173,7 +173,7 @@ export default function AdminSponsorsPage() {
                 <button 
                   onClick={upload}
                   disabled={loading}
-                  className="w-full bg-slate-900 hover:bg-pink-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                  className="w-full bg-pink-900 hover:bg-pink-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
                   <Plus className="w-5 h-5" />
                   {loading ? "Proses Upload..." : "Upload Sponsor"}

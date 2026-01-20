@@ -1,10 +1,10 @@
-///subteam/[slug]/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import SponsorsFooter from "@/components/home/SponsorFooter";
 
 /* ---------- Skeleton Card ---------- */
 function MemberCardSkeleton() {
@@ -59,14 +59,14 @@ function MemberCard({
         {/* Content dengan height yang flexible */}
         <div className="flex-1 flex flex-col justify-between">
           <div>
-            <div className="font-bold text-center mb-1 line-clamp-2">
+            <div className="font-bold text-center mb-1 line-clamp-2 font-sans">
               {item.member_profiles?.members?.name || "Unknown"}
             </div>
-            <div className="text-sm opacity-80 text-center mb-1 line-clamp-1">
+            <div className="text-sm opacity-80 text-center mb-1 line-clamp-1 font-sans">
               {item.positions?.name || "-"}
             </div>
           </div>
-          <div className="text-xs opacity-70 text-center line-clamp-2">
+          <div className="text-xs opacity-70 text-center line-clamp-2 font-sans">
             {item.member_profiles?.members?.programs?.name || "-"} – {item.member_profiles?.members?.program_batch || "-"}
           </div>
         </div>
@@ -229,29 +229,29 @@ export default function SubteamDetailPage() {
 
   return (
     <div className="min-h-screen bg-white gf-grid">
-      {/* HERO */}
-      <div className="relative px-8 py-15 bg-[#E6B52C] text-[#1C2B5A] overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-125 h-125 bg-white/40 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 right-0 w-100 h-100 bg-white/30 blur-[100px] rounded-full" />
+      {/* HERO - RESPONSIVE */}
+      <div className="relative px-4 sm:px-6 md:px-8 py-12 sm:py-16 md:py-20 bg-[#E6B52C] text-[#1C2B5A] overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-125 h-125 sm:w-150 sm:h-150 bg-white/40 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 right-0 w-100 h-100 sm:w-125 sm:h-125 bg-white/30 blur-[100px] rounded-full" />
 
         <div className="relative max-w-6xl mx-auto">
           <Link 
             href="/subteam" 
-            className="inline-flex items-center gap-2 mb-8 px-4 py-2 bg-[#1C2B5A] text-white rounded-full text-sm font-bold shadow-lg hover:bg-[#1C2B5A]/80 transition duration-300 group"
+            className="inline-flex items-center gap-2 mb-6 sm:mb-8 px-3 sm:px-4 py-1.5 sm:py-2 bg-[#1C2B5A] text-white rounded-full text-xs sm:text-sm font-bold shadow-lg hover:bg-[#1C2B5A]/80 transition duration-300 group font-sans"
           >
             <span className="group-hover:-translate-x-1 transition duration-300">←</span> 
             Back to Subteams
           </Link>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-5xl font-extrabold mb-4 leading-tight">
-                {team ? team.name : <div className="h-12 bg-black/10 animate-pulse rounded-lg w-3/4" />}
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="order-2 md:order-1">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4 leading-tight font-title">
+                {team ? team.name : <div className="h-10 sm:h-12 bg-black/10 animate-pulse rounded-lg w-3/4" />}
               </h1>
-              <div className="text-[#1C2B5A] font-bold mb-4 opacity-90 text-lg">
+              <div className="text-[#1C2B5A] font-bold mb-3 sm:mb-4 opacity-90 text-base sm:text-lg font-sans">
                 {team ? team.tagline : <div className="h-5 bg-black/10 animate-pulse rounded w-1/2" />}
               </div>
-              <div className="text-[#1C2B5A]/80 max-w-xl font-medium leading-relaxed">
+              <div className="text-[#1C2B5A]/80 max-w-xl font-medium leading-relaxed font-sans text-sm sm:text-base">
                 {team ? team.description : (
                   <div className="space-y-2">
                     <div className="h-4 bg-black/10 animate-pulse rounded w-full" />
@@ -261,15 +261,15 @@ export default function SubteamDetailPage() {
               </div>
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center order-1 md:order-2">
               {team?.logo_path ? (
                 <img
                   src={supabase.storage.from("subteam-logo").getPublicUrl(team.logo_path).data.publicUrl}
-                  className="w-75 drop-shadow-2xl brightness-95 contrast-110"
+                  className="w-48 sm:w-56 md:w-64 lg:w-75 drop-shadow-2xl brightness-95 contrast-110"
                   alt={team.name}
                 />
               ) : (
-                <div className="w-64 h-64 bg-black/10 animate-pulse rounded-full" />
+                <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 bg-black/10 animate-pulse rounded-full" />
               )}
             </div>
           </div>
@@ -277,19 +277,19 @@ export default function SubteamDetailPage() {
       </div>
 
       {/* CONTENT */}
-      <div className="px-8 py-10 max-w-7xl mx-auto">
-        {/* Year Tabs */}
-        <div className="mb-10">
-          <div className="w-full h-12 bg-[#1C2B5A] rounded-md flex items-end px-8 gap-12 shadow-xl">
+      <div className="px-4 sm:px-6 md:px-8 py-8 md:py-10 max-w-7xl mx-auto">
+        {/* Year Tabs - RESPONSIVE */}
+        <div className="mb-8 md:mb-10 overflow-hidden">
+          <div className="w-full min-h-12 bg-[#1C2B5A] rounded-md flex items-end px-4 sm:px-6 md:px-8 gap-6 sm:gap-8 md:gap-12 font-title overflow-x-auto scrollbar-hide">
             {years.length > 0 ? (
               years.map((y) => (
                 <button
                   key={y}
                   onClick={() => setYear(y)}
-                  className={`pb-2 text-lg font-bold transition duration-300 ${
+                  className={`pb-2 text-base sm:text-lg whitespace-nowrap transition duration-300 cursor-pointer ${
                     year === y
-                      ? "text-[#E6B52C] border-b-4 border-[#E6B52C] cursor-pointer"
-                      : "text-white/60 hover:text-white cursor-pointer"
+                      ? "text-[#E6B52C] border-b-4 border-[#E6B52C]"
+                      : "text-white/60 hover:text-white"
                   }`}
                 >
                   {y}
@@ -302,7 +302,7 @@ export default function SubteamDetailPage() {
         </div>
 
         {loading ? (
-          <div className="space-y-24">
+          <div className="space-y-32">
             <div className="flex justify-center"><MemberCardSkeleton /></div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 place-items-center">
               {[...Array(4)].map((_, i) => <MemberCardSkeleton key={i} />)}
@@ -310,23 +310,20 @@ export default function SubteamDetailPage() {
           </div>
         ) : (
           <>
-            {data.length === 0 && <p className="text-[#1C2B5A] text-center font-bold text-xl py-20">No data for this year.</p>}
+            {data.length === 0 && <p className="text-[#1C2B5A] text-center font-bold text-xl py-20 font-sans">No data for this year.</p>}
             
             {/* TEAM LEADER */}
             {leader.length > 0 && (
-              <div className="mb-15 flex justify-center">
+              <div className="mb-16 flex justify-center">
                 <MemberCard item={leader[0]} variant="gold" />
               </div>
             )}
 
             {/* MEMBERS (non-leader, non-unit) */}
             {membersList.length > 0 && (
-              // HAPUS logic ternary. Selalu gunakan justify-center.
               <div className="mb-24 flex flex-wrap justify-center gap-10">
                 {membersList.map((item, i) => (
-                  // KALKULASI:
-                  // sm (2 col): 50% dikurangi setengah gap (20px)
-                  // lg (4 col): 25% dikurangi 3/4 gap (30px) agar pas 4 biji
+
                   <div
                     key={item.id}
                     className="w-full sm:w-[calc(50%-20px)] lg:w-[calc(25%-30px)] flex justify-center"
@@ -360,9 +357,9 @@ export default function SubteamDetailPage() {
                     return (
                       <div
                         key={unitMembersList[0]?.unit_id || "no-unit"}
-                        className="mb-24"
+                        className="mb-16"
                       >
-                        <h2 className="text-3xl font-extrabold mb-10 text-center text-[#1C2B5A]">
+                        <h2 className="text-3xl font-extrabold mb-10 text-center text-[#1C2B5A] font-title">
                           {unitMembersList[0]?.team_units?.name || "No Unit"}
                         </h2>
 
@@ -403,6 +400,18 @@ export default function SubteamDetailPage() {
           </>
         )}
       </div>
+      <SponsorsFooter />
+
+      <style jsx global>{`
+        /* Hide scrollbar for year tabs */
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 }

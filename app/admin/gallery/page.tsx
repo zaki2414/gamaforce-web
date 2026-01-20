@@ -283,7 +283,7 @@ export default function AdminGalleryPage() {
                 <div>
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Judul Foto</label>
                   <input
-                    placeholder="Contoh: Tes Terbang Elang Hitam"
+                    placeholder="Contoh: Fiachra's Takeoff in KRTI 2026"
                     className="w-full p-4 bg-white border-2 border-slate-100 rounded-2xl focus:border-teal-500 focus:ring-4 focus:ring-teal-50 focus:outline-none transition-all font-bold"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}

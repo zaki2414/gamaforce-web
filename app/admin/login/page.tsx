@@ -1,10 +1,17 @@
 "use client";
+
 import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-// Import Icon dari Lucide
-import { Lock, Mail, ArrowLeft, Chrome, Loader2 } from "lucide-react";
+import {
+  Lock,
+  Mail,
+  ArrowLeft,
+  Chrome,
+  Loader2,
+  ShieldCheck,
+} from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -19,107 +26,121 @@ export default function AdminLoginPage() {
       password,
     });
     setLoading(false);
-    if (error) {
-      alert(error.message);
-    } else {
-      router.push("/auth/callback");
-    }
+    if (error) alert(error.message);
+    else router.push("/admin");
   }
 
   async function loginWithGoogle() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        redirectTo: `${location.origin}/auth/callback`,
-      },
+      options: { redirectTo: `${location.origin}/auth/callback` },
     });
-    if (error) {
-      alert(error.message);
-    }
+    if (error) alert(error.message);
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4">
-      {/* Tombol Kembali */}
-      <div className="w-full max-w-md mb-6">
-        <Link 
-          href="/admin" 
-          className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors group"
-        >
-          <ArrowLeft className="mr-2 w-4 h-4 group-hover:-translate-x-1 transition-transform" /> 
-          Back to Dashboard
-        </Link>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-6 text-[#1C2B5A]">
+      {/* Background Blur */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#1C2B5A]/5 rounded-full blur-[120px]" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[#E6B52C]/10 rounded-full blur-[120px]" />
       </div>
 
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden">
-        {/* Header dengan Icon */}
-        <div className="bg-indigo-600 p-8 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-4 backdrop-blur-sm">
-            <Lock className="text-white w-8 h-8" />
-          </div>
-          <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
-          <p className="text-indigo-100 text-sm mt-1">Please sign in to your account</p>
-        </div>
+      <div className="w-full max-w-md">
+        {/* Back */}
+        <Link
+          href="/"
+          className="mb-8 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[#1C2B5A] font-sans"
+        >
+          <ArrowLeft className="w-3 h-3" />
+          Back to site
+        </Link>
 
-        <div className="p-8">
-          {/* Form Email */}
-          <div className="space-y-4">
-            <div className="relative">
-              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Email Address</label>
+        {/* Card */}
+        <div className="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 p-8 space-y-8">
+          {/* Header */}
+          <div>
+            <div>
+            </div>
+
+            <h1 className="text-3xl font-black tracking-tight font-title">
+              Admin Portal
+            </h1>
+
+            <p className="text-sm text-slate-500 font-sans">
+              Authenticate to access Gamaforce control panel.
+            </p>
+          </div>
+
+          {/* Form */}
+          <div className="space-y-5 font-sans">
+            {/* Email */}
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">
+                Email
+              </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
                 <input
                   type="email"
-                  placeholder="admin@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all text-slate-700"
+                  placeholder="admin@gamaforce.com"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-[#1C2B5A] focus:bg-white outline-none text-sm font-semibold transition"
                 />
               </div>
             </div>
 
-            <div className="relative">
-              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Password</label>
+            {/* Password */}
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">
+                Password
+              </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
                 <input
                   type="password"
-                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all text-slate-700"
+                  placeholder="••••••••"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-[#1C2B5A] focus:bg-white outline-none text-sm font-semibold transition"
                 />
               </div>
             </div>
+          </div>
 
+          {/* Actions */}
+          <div className="space-y-4 pt-2 font-sans">
             <button
               onClick={loginWithEmail}
               disabled={loading}
-              className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 disabled:bg-indigo-300 transition-all shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 active:scale-[0.98]"
+              className="w-full flex items-center justify-center gap-3 bg-[#1C2B5A] text-white py-4 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-[#1C2B5A]/90 active:scale-[0.98] transition disabled:opacity-50 cursor-pointer"
             >
-              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Sign In Now"}
+              {loading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                "Login"
+              )}
+            </button>
+
+            <div className="flex items-center gap-4">
+              <div className="flex-1 h-px bg-slate-100" />
+              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">
+                Or
+              </span>
+              <div className="flex-1 h-px bg-slate-100" />
+            </div>
+
+            <button
+              onClick={loginWithGoogle}
+              className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl border border-slate-200 font-black uppercase tracking-widest text-xs hover:border-[#1C2B5A] transition cursor-pointer"
+            >
+              <Chrome className="w-4 h-4" />
+              Google Login
             </button>
           </div>
-
-          <div className="relative my-8 text-center">
-            <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t border-slate-100"></span>
-            <span className="relative px-4 bg-white text-sm text-slate-400">or use social login</span>
-          </div>
-
-          {/* Google Login */}
-          <button
-            onClick={loginWithGoogle}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 font-semibold py-3 rounded-xl hover:bg-slate-50 transition-all active:scale-[0.98]"
-          >
-            <Chrome className="w-5 h-5 text-red-500" />
-            Continue with Google
-          </button>
         </div>
       </div>
-      
-      <p className="mt-8 text-slate-400 text-sm italic">
-        Authorized personnel only.
-      </p>
     </div>
   );
 }

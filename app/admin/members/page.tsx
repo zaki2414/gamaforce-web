@@ -175,9 +175,6 @@ export default function AdminMembersPage() {
             <h1 className="text-xl font-black tracking-tight text-slate-900">Kelola Members</h1>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-black bg-slate-100 px-3 py-1 rounded-full text-slate-500 uppercase tracking-widest">
-              {members.length} Total
-            </span>
             {editingId && (
               <button onClick={cancelEdit} className="flex items-center gap-1 text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1 rounded-lg transition cursor-pointer">
                 <X className="w-4 h-4" /> Batal Edit
@@ -198,9 +195,9 @@ export default function AdminMembersPage() {
               <div className={`${editingId ? "bg-rose-600 text-white" : "bg-rose-100 text-rose-700"} w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-colors`}>
                 {editingId ? <Edit3 className="w-6 h-6" /> : <Users className="w-6 h-6" />}
               </div>
-              <h2 className="text-2xl font-black mb-2">{editingId ? "Edit Member" : "Registrasi Member"}</h2>
+              <h2 className="text-2xl font-black mb-2">{editingId ? "Edit Member" : "Tambahkan Member"}</h2>
               <p className="text-slate-500 mb-8 font-medium text-sm leading-relaxed">
-                {editingId ? "Perbarui detail informasi keanggotaan." : "Tambahkan anggota baru ke dalam database sistem."}
+                {editingId ? "Perbarui detail informasi keanggotaan." : "Tambah Anggota"}
               </p>
 
               <div className="space-y-5">
@@ -209,7 +206,7 @@ export default function AdminMembersPage() {
                     <User className="w-3 h-3" /> Nama Lengkap
                   </label>
                   <input
-                    placeholder="Contoh: Andi Wijaya"
+                    placeholder="Contoh: Zaki Fadhila"
                     className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-rose-500 focus:ring-4 focus:ring-rose-50 focus:outline-none transition-all font-bold"
                     value={name}
                     onChange={(e) => setName(e.target.value)}

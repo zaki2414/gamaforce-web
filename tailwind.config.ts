@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        title: ["var(--font-title)", "monospace"],
+        sans: ["var(--font-body)", "sans-serif"],
+      },
       colors: {
         gf: {
           navy: "#1C2B5A",   // Gamaforce blue
