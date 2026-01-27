@@ -37,7 +37,7 @@ function MemberCard({
   const photo = photoUrl && photoUrl.trim() !== ""
     ? photoUrl.replace(
         "/upload/",
-        "/upload/c_thumb,g_face,z_0.3,w_350,h_380/"
+        "/upload/c_thumb,g_face,z_0.3,w_700,h_760/"
       )
     : null;
 

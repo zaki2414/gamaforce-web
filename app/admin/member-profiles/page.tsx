@@ -132,7 +132,7 @@ export default function AdminMemberProfilesPage() {
   async function uploadPhoto(profileId: string, file: File) {
     setUploadingId(profileId);
     try {
-      const compressed = await imageCompression(file, { maxSizeMB: 0.3, maxWidthOrHeight: 1200, useWebWorker: true });
+      const compressed = await imageCompression(file, { maxSizeMB: 2, maxWidthOrHeight: 2000, useWebWorker: true });
       const url = await uploadToCloudinary(compressed);
       await supabase.from("member_profiles").update({ photo_url: url }).eq("id", profileId);
       setMessage("✅ Photo uploaded");

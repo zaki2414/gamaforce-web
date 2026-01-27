@@ -120,13 +120,13 @@ export default function AdminAboutPage() {
   return (
     <div className="min-h-screen bg-white text-[#1C2B5A]">
       {/* Navbar */}
-      <nav className="bg-white border-b border-[#1C2B5A] sticky top-0 z-10 shadow-sm">
+      <nav className="bg-white sticky top-0 z-10 shadow-sm">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/admin" className="p-2 hover:bg-slate-100 rounded-lg transition text-slate-600">
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <h1 className="text-xl font-black tracking-tight">About & Contact</h1>
+            <h1 className="text-xl font-black tracking-tight font-sans">About & Contact</h1>
           </div>
           {message && (
             <div className="flex items-center gap-2 bg-[#1C2B5A] text-white px-4 py-2 rounded-full text-xs font-bold animate-in fade-in zoom-in">
@@ -145,10 +145,10 @@ export default function AdminAboutPage() {
               <div className="bg-[#1C2B5A] text-white p-2 rounded-lg">
                 <Settings2 className="w-5 h-5" />
               </div>
-              <h2 className="text-2xl font-black">Profil Organisasi</h2>
+              <h2 className="text-2xl font-black font-sans">Profil Organisasi</h2>
             </div>
 
-            <div className="bg-[#1C2B5A]/10 border-2 border-[#1C2B5A] rounded-4xl p-8 shadow-sm">
+            <div className="bg-[#1C2B5A]/10 border-2 border-[#1C2B5A] rounded-4xl p-8 shadow-sm font-sans">
               <div className="space-y-6">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-[#1C2B5A] mb-2">Judul Besar</label>
@@ -178,7 +178,7 @@ export default function AdminAboutPage() {
                     <input
                       value={about?.youtube_url || ""}
                       onChange={(e) => setAbout({ ...about, youtube_url: e.target.value })}
-                      className="w-full pl-12 pr-4 py-4 bg-white border-2 border-[#1C2B5A]/60 rounded-2xl focus:border-[#1C2B5A] outline-none transition-all font-mono text-sm"
+                      className="w-full pl-12 pr-4 py-4 max-w-full font-sans bg-white border-2 border-[#1C2B5A]/60 rounded-2xl focus:border-[#1C2B5A] outline-none transition-all text-sm"
                       placeholder="https://youtube.com/watch?v=..."
                     />
                   </div>
@@ -203,17 +203,17 @@ export default function AdminAboutPage() {
                 <div className="bg-[#E6B52C] text-white p-2 rounded-lg">
                   <Phone className="w-5 h-5" />
                 </div>
-                <h2 className="text-2xl font-black">Hubungi Kami</h2>
+                <h2 className="text-2xl font-black font-sans">Hubungi Kami</h2>
               </div>
               <button 
                 onClick={addContact}
-                className="flex items-center gap-2 text-[#E6B52C] hover:text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-[#E6B52C] transition-colors border border-[#E6B52C] cursor-pointer"
+                className="flex items-center gap-2 text-[#E6B52C] hover:text-white px-4 py-2 rounded-xl font-bold font-sans text-sm hover:bg-[#E6B52C] transition-colors border border-[#E6B52C] cursor-pointer"
               >
                 <UserPlus className="w-4 h-4" /> Tambah Personel
               </button>
             </div>
 
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 font-sans">
               {persons.length === 0 ? (
                 <div className="text-center py-12 border-2 border-dashed border-slate-100 rounded-3xl text-slate-400 font-medium">
                   Belum ada kontak terdaftar.

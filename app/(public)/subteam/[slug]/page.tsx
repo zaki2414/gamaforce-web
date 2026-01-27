@@ -38,7 +38,7 @@ function MemberCard({
     item.member_profiles?.photo_url &&
     item.member_profiles.photo_url.replace(
       "/upload/",
-      "/upload/c_thumb,g_face,z_0.3,w_350,h_380/"
+        "/upload/c_thumb,g_face,z_0.3,w_700,h_760/"
     );
 
   return (

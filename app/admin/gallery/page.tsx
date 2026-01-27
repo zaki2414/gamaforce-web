@@ -13,12 +13,12 @@ import {
   Trash2,
   Edit3,
   Layers,
-  Hash,
   UploadCloud,
   EyeOff,
   X,
   Camera,
   CheckCircle2,
+  Star,
 } from "lucide-react";
 
 /* ================= TYPES ================= */
@@ -28,9 +28,9 @@ type Gallery = {
   title: string;
   description: string | null;
   photo_url: string;
-  layout_type: "normal" | "wide" | "tall" | "featured";
-  order_index: number;
+  layout_type: "normal" | "square" | "wide" | "tall" | "featured";
   is_published: boolean;
+  is_hero: boolean;
 };
 
 /* ================= HELPERS ================= */
@@ -46,7 +46,7 @@ async function detectLayoutType(file: File): Promise<Gallery["layout_type"]> {
 
       if (ratio >= 1.8) return resolve("wide");
       if (ratio <= 0.75) return resolve("tall");
-      if (ratio >= 0.9 && ratio <= 1.1) return resolve("featured");
+      if (ratio >= 0.9 && ratio <= 1.1) return resolve("square");
       return resolve("normal");
     };
 
@@ -70,8 +70,8 @@ export default function AdminGalleryPage() {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [layoutType, setLayoutType] = useState<Gallery["layout_type"]>("normal");
-  const [orderIndex, setOrderIndex] = useState(0);
   const [isPublished, setIsPublished] = useState(true);
+  const [isHero, setIsHero] = useState(false);
 
   /* ================= AUTH ================= */
 
@@ -88,7 +88,7 @@ export default function AdminGalleryPage() {
     const { data } = await supabase
       .from("galleries")
       .select("*")
-      .order("order_index", { ascending: true });
+      .order("created_at", { ascending: false });
     setItems(data || []);
     setInitialLoading(false);
   }
@@ -108,8 +108,8 @@ export default function AdminGalleryPage() {
       setLayoutType(detectedLayout);
 
       const compressed = await imageCompression(file, {
-        maxSizeMB: 0.3,
-        maxWidthOrHeight: 1600,
+        maxSizeMB: 2,
+        maxWidthOrHeight: 2000,
         useWebWorker: true,
       });
 
@@ -132,13 +132,20 @@ export default function AdminGalleryPage() {
 
     setLoading(true);
 
+    if (isHero) {
+      await supabase
+        .from("galleries")
+        .update({ is_hero: false })
+        .eq("is_hero", true);
+    }
+
     const payload = {
       title,
       description: description.trim() || null,
       photo_url: imageUrl,
       layout_type: layoutType,
-      order_index: orderIndex,
       is_published: isPublished,
+      is_hero: isHero,
     };
 
     const { error } = editingId
@@ -163,8 +170,8 @@ export default function AdminGalleryPage() {
     setDescription("");
     setImageUrl("");
     setLayoutType("normal");
-    setOrderIndex(0);
     setIsPublished(true);
+    setIsHero(false);
     setMessage("");
   }
 
@@ -174,8 +181,8 @@ export default function AdminGalleryPage() {
     setDescription(item.description || "");
     setImageUrl(item.photo_url);
     setLayoutType(item.layout_type);
-    setOrderIndex(item.order_index);
     setIsPublished(item.is_published);
+    setIsHero(item.is_hero || false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -195,7 +202,6 @@ export default function AdminGalleryPage() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans">
-      {/* Navbar */}
       <nav className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -221,7 +227,6 @@ export default function AdminGalleryPage() {
       <main className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* LEFT: FORM */}
           <div className="lg:col-span-5">
             <div className={`sticky top-28 p-8 rounded-3xl border-2 transition-all duration-300 ${editingId ? 'bg-teal-50 border-teal-100' : 'bg-teal-50/30 border-teal-100'}`}>
               <div className={`${editingId ? 'bg-teal-500' : 'bg-teal-600'} text-white w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-teal-100`}>
@@ -236,7 +241,6 @@ export default function AdminGalleryPage() {
               </p>
 
               <div className="space-y-5">
-                {/* Image Upload Area */}
                 <div className="relative">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 flex items-center gap-2">
                     <UploadCloud className="w-3 h-3" /> File Gambar
@@ -246,12 +250,7 @@ export default function AdminGalleryPage() {
                       <img src={imageUrl} className="w-full h-full object-cover" alt="Preview" />
                       <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center cursor-pointer backdrop-blur-sm">
                         <span className="bg-white text-slate-900 px-4 py-2 rounded-xl font-bold text-sm shadow-xl">Ganti Foto</span>
-                        <input 
-                          type="file" 
-                          hidden 
-                          accept="image/*" 
-                          onChange={(e) => e.target.files && uploadPhoto(e.target.files[0])} 
-                        />
+                        <input type="file" hidden accept="image/*" onChange={(e) => e.target.files && uploadPhoto(e.target.files[0])} />
                       </label>
                       {uploading && (
                          <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
@@ -269,13 +268,7 @@ export default function AdminGalleryPage() {
                           <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Pilih Gambar</span>
                         </>
                       )}
-                      <input 
-                        type="file" 
-                        hidden 
-                        accept="image/*" 
-                        disabled={uploading}
-                        onChange={(e) => e.target.files && uploadPhoto(e.target.files[0])} 
-                      />
+                      <input type="file" hidden accept="image/*" disabled={uploading} onChange={(e) => e.target.files && uploadPhoto(e.target.files[0])} />
                     </label>
                   )}
                 </div>
@@ -290,33 +283,34 @@ export default function AdminGalleryPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 flex items-center gap-2">
-                      <Layers className="w-3 h-3" /> Layout
-                    </label>
-                    <select
-                      value={layoutType}
-                      onChange={(e) => setLayoutType(e.target.value as any)}
-                      className="w-full p-4 bg-white border-2 border-slate-100 rounded-2xl focus:border-teal-500 focus:outline-none transition-all font-bold text-sm appearance-none"
-                    >
-                      <option value="normal">Normal (4:3)</option>
-                      <option value="wide">Wide (16:9)</option>
-                      <option value="tall">Tall (3:4)</option>
-                      <option value="featured">Featured (1:1)</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 flex items-center gap-2">
-                      <Hash className="w-3 h-3" /> Urutan
-                    </label>
-                    <input
-                      type="number"
-                      value={orderIndex}
-                      onChange={(e) => setOrderIndex(+e.target.value)}
-                      className="w-full p-4 bg-white border-2 border-slate-100 rounded-2xl focus:border-teal-500 focus:outline-none transition-all font-bold"
-                    />
-                  </div>
+                <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-amber-100">
+                  <span className="text-xs font-black uppercase tracking-widest text-amber-600 flex items-center gap-2">
+                    <Star className={`w-4 h-4 ${isHero ? 'fill-amber-500' : ''}`} />
+                    Jadikan Foto Hero Utama
+                  </span>
+                  <button 
+                    onClick={() => setIsHero(!isHero)}
+                    className={`cursor-pointer relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isHero ? 'bg-amber-500' : 'bg-slate-300'}`}
+                  >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isHero ? 'translate-x-6' : 'translate-x-1'}`} />
+                  </button>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 flex items-center gap-2">
+                    <Layers className="w-3 h-3" /> Layout
+                  </label>
+                  <select
+                    value={layoutType}
+                    onChange={(e) => setLayoutType(e.target.value as any)}
+                    className="w-full p-4 bg-white border-2 border-slate-100 rounded-2xl focus:border-teal-500 focus:outline-none transition-all font-bold text-sm appearance-none"
+                  >
+                    <option value="normal">Normal (4:3)</option>
+                    <option value="square">Square (1:1)</option>
+                    <option value="wide">Wide (16:9)</option>
+                    <option value="tall">Tall (3:4)</option>
+                    <option value="featured">Featured (1:1)</option>
+                  </select>
                 </div>
 
                 <div>
@@ -367,7 +361,6 @@ export default function AdminGalleryPage() {
             </div>
           </div>
 
-          {/* RIGHT: LIST */}
           <div className="lg:col-span-7">
             <div className="flex items-center justify-between mb-8">
               <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
@@ -385,7 +378,7 @@ export default function AdminGalleryPage() {
                 items.map((item) => (
                   <div
                     key={item.id}
-                    className={`group relative flex flex-col bg-white border-2 rounded-3xl transition-all duration-300 overflow-hidden ${editingId === item.id ? 'border-teal-400 ring-4 ring-teal-50 shadow-xl' : 'border-slate-50 hover:border-teal-500'}`}
+                    className={`group relative flex flex-col bg-white border-2 rounded-3xl transition-all duration-300 overflow-hidden ${editingId === item.id ? 'border-teal-400 ring-4 ring-teal-50 shadow-xl' : 'border-slate-50 hover:border-teal-500'} ${item.is_hero ? 'ring-2 ring-amber-400' : ''}`}
                   >
                     <div className="relative aspect-4/3 overflow-hidden bg-slate-100">
                       <img
@@ -397,14 +390,16 @@ export default function AdminGalleryPage() {
                          <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[9px] font-black uppercase shadow-sm border border-slate-100 w-fit">
                            {item.layout_type}
                          </span>
+                         {item.is_hero && (
+                            <span className="bg-amber-500 text-white px-3 py-1 rounded-full text-[9px] font-black uppercase shadow-sm w-fit flex items-center gap-1">
+                               <Star className="w-3 h-3 fill-white" /> Hero
+                            </span>
+                         )}
                          {!item.is_published && (
                             <span className="bg-red-500 text-white px-3 py-1 rounded-full text-[9px] font-black uppercase shadow-sm w-fit flex items-center gap-1">
                                <EyeOff className="w-3 h-3" /> Draft
                             </span>
                          )}
-                      </div>
-                      <div className="absolute top-4 right-4 h-8 w-8 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white text-[10px] font-bold border border-white/20">
-                         #{item.order_index}
                       </div>
                     </div>
 

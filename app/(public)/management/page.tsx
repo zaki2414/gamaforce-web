@@ -56,7 +56,7 @@ function MemberCard({
   const photo = photoUrl && photoUrl.trim() !== ""
     ? photoUrl.replace(
         "/upload/",
-        "/upload/c_thumb,g_face,z_0.3,w_350,h_380/"
+        "/upload/c_thumb,g_face,z_0.3,w_700,h_760/"
       )
     : null;
 
@@ -351,7 +351,7 @@ export default function ManagementPage() {
               )}
             </div>
           </div>
-          <div className="flex justify-center order-2 md:order-1">
+          <div className="flex justify-center order-1 md:order-2">
             {group?.logo_path ? (
               <img 
                 src={supabase.storage.from("subteam-logo").getPublicUrl(group.logo_path.trim()).data.publicUrl} 

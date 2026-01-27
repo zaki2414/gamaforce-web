@@ -162,7 +162,7 @@ export default function ContactPage() {
                     return (
                       <div
                         key={p.id}
-                        className="group bg-[#1C2B5A] p-5 md:p-6 rounded-3xl md:rounded-[2.5rem] flex flex-col md:flex-row md:justify-between md:items-center shadow-md hover:shadow-xl transition-all font-sans"
+                        className="group bg-[#1C2B5A] p-5 md:p-6 rounded-2xl md:rounded-3xl flex flex-col md:flex-row md:justify-between md:items-center shadow-md hover:shadow-xl transition-all font-sans"
                       >
                         <div className="mb-4 md:mb-0 px-1">
                           <div className="text-lg md:text-xl font-black text-[#E6B52C] group-hover:text-white transition-colors">
@@ -188,7 +188,7 @@ export default function ContactPage() {
               </div>
 
               {!loading && (
-                <div className="mt-8 md:mt-12 p-6 md:p-8 rounded-3xl md:rounded-4xl bg-[#E6B52C]/15 border border-[#E6B52C]/30 text-center font-sans">
+                <div className="mt-8 md:mt-12 p-6 md:p-8 rounded-2xl md:rounded-3xl bg-[#E6B52C]/15 border border-[#E6B52C]/30 text-center font-sans">
                   <p className="text-[#1C2B5A] font-bold text-sm md:text-base">
                     For official partnerships & proposals<br />
                     <span className="text-slate-400 font-medium text-xs md:text-sm">

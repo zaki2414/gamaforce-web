@@ -120,7 +120,7 @@ export default function AdminSponsorsPage() {
           <Link href="/admin" className="p-2 hover:bg-slate-100 rounded-lg transition text-slate-600">
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-xl font-black tracking-tight">Kelola Sponsor</h1>
+          <h1 className="text-xl font-black tracking-tight font-sans">Kelola Sponsor</h1>
         </div>
       </nav>
 
@@ -133,22 +133,22 @@ export default function AdminSponsorsPage() {
               <div className="bg-pink-100 text-pink-700 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
                 <ImageIcon className="w-6 h-6" />
               </div>
-              <h2 className="text-2xl font-black mb-2">Tambah Partner</h2>
-              <p className="text-slate-500 mb-8 font-medium text-sm">Upload logo sponsor atau partner resmi.</p>
+              <h2 className="text-2xl font-black mb-2 font-sans">Tambah Partner</h2>
+              <p className="text-slate-500 mb-8 font-medium text-sm font-sans">Upload logo sponsor dan media partner. Satu foto akan berisi kumpulan logo-logo sponsor ataupun media partner.</p>
 
               <div className="space-y-5">
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Nama Instansi</label>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 font-sans">Nama Instansi</label>
                   <input
                     placeholder="Nama Perusahaan/Brand"
-                    className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-pink-500 outline-none transition-all font-bold"
+                    className="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl focus:border-pink-500 outline-none transition-all font-bold font-sans"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Logo Logo</label>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2 font-sans">Logo Logo</label>
                   <div className="relative border-2 border-dashed border-slate-200 rounded-2xl p-4 bg-white hover:border-pink-300 transition-colors">
                     {previewUrl ? (
                       <div className="relative group">
@@ -163,7 +163,7 @@ export default function AdminSponsorsPage() {
                     ) : (
                       <label className="flex flex-col items-center py-6 cursor-pointer">
                         <Upload className="w-8 h-8 text-slate-300 mb-2" />
-                        <span className="text-xs font-bold text-slate-400">Pilih File Image</span>
+                        <span className="text-xs font-bold text-slate-400 font-sans">Pilih File Image</span>
                         <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
                       </label>
                     )}
@@ -173,7 +173,7 @@ export default function AdminSponsorsPage() {
                 <button 
                   onClick={upload}
                   disabled={loading}
-                  className="w-full bg-pink-900 hover:bg-pink-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                  className="w-full bg-pink-900 hover:bg-pink-600 font-sans text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
                   <Plus className="w-5 h-5" />
                   {loading ? "Proses Upload..." : "Upload Sponsor"}
@@ -190,8 +190,8 @@ export default function AdminSponsorsPage() {
 
           {/* Kolom Kanan: Gallery Sponsor */}
           <div className="lg:col-span-8">
-            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
-              Partner Terdaftar <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-600 font-bold">{data.length}</span>
+            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2 font-sans">
+              Partner Terdaftar <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-600 font-bold font-sans">{data.length}</span>
             </h3>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
@@ -210,7 +210,7 @@ export default function AdminSponsorsPage() {
                         alt={s.name}
                       />
                     </div>
-                    <div className="text-center border-t border-slate-50 pt-4">
+                    <div className="text-center border-t border-slate-50 pt-4 font-sans">
                       <p className="text-sm font-black text-slate-700 truncate mb-2">{s.name}</p>
                       <button
                         onClick={() => remove(s)}

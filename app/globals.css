@@ -54,6 +54,12 @@ body {
 
   .text-transparent-outline {
     -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 4px #E6B52C;
+    -webkit-text-stroke: 2px #E6B52C;
+  }
+
+  @media (min-width: 768px) {
+    .text-transparent-outline {
+      -webkit-text-stroke: 4px #E6B52C;
+    }
   }
 }
